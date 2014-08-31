@@ -23,12 +23,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
 var posts = [];
-var count = 0;
-
-app.all('*',function( req, res, next){
-	console.log("count:" + count++);
-	next();
-});
 
 function User(name, email) {
   this.name = name;
