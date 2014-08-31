@@ -22,6 +22,14 @@ app.set('views', __dirname + '/views');
 // (although you can still mix and match)
 app.set('view engine', 'jade');
 
+var posts = [];
+var count = 0;
+
+app.all('*',function( req, res, next){
+	console.log("count:" + count++);
+	next();
+});
+
 function User(name, email) {
   this.name = name;
   this.email = email;
@@ -36,6 +44,63 @@ var users = [
 
 app.get('/', function(req, res){
   res.render('users', { users: users });
+});
+
+app.get('/1/post',function(req,res){
+	var subject;
+	var content;
+	var sign;
+
+	if(typeof(req.body) === 'undefined') {
+	subject = req.query.subject;
+	content = req.query.content;
+	sign = req.query.sign;
+	}
+	var post = {
+		"subject" : subject,
+		"content" : content,
+		"sign" : sign
+	};
+
+	posts.push(post);
+	console.log(req);
+
+	res.send(posts);
+});
+
+app.post('/1/post',function(req,res){
+	res.send(posts);
+});
+
+app.post('/1/post',function(req,res){
+	var subject;
+	var content;
+	var sign;
+
+	if(typeof(req.body) === 'undefined') {
+	subject = req.query.subject;
+	content = req.query.content;
+	sign = req.query.sign;
+	}
+
+	var post = {
+		"subject" : subject,
+		"content" : content,
+	};
+
+	posts.push(post);
+	console.log(req);
+
+	res.send({status:'ok!!'});
+});
+
+app.delete('/1/post',function(req,res){
+	res.send("Delete a post")
+});
+
+app.put('/1/post/:postid',function(req,res){
+	var id = req.param.postid;
+	res.send("test postid:"+id);
 });
 
 // change this to a better error handler in your code
